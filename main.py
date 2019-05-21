@@ -13,6 +13,7 @@ def run_query(bookkeeping, query):
 	for d in bookkeeping:
 		page = open('WEBPAGES_RAW/'+d)
 		soup = BeautifulSoup(page, 'html.parser')
+		# TODO: need to figure out how to use beautifulsoup here
 		# test = soup.findAll(text = re.compile(query[:3]))
 		test = re.compile(query[:3])
 		print(test.fullmatch(query))
