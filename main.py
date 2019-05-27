@@ -15,10 +15,8 @@ def run_query(bookkeeping, query):
 		soup = BeautifulSoup(page, 'html.parser')
 		# TODO: need to figure out how to use beautifulsoup here
 		# test = soup.findAll(text = re.compile(query[:3]))
-		test = re.compile(query[:3])
-		print(test.fullmatch(query))
 
-		if (test.fullmatch(query)):
+		if soup.findAll(text=query):
 			print(bookkeeping[d])
 			result.append(bookkeeping[d])
 		page.close()
