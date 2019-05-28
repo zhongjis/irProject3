@@ -9,16 +9,17 @@ def ask_input() -> str:
 
 def run_query(bookkeeping, query):
 	# this function will run the query over all the pages in bookkeeping
-	result = []
+	result = set()
 	for d in bookkeeping:
-		page = open('WEBPAGES_RAW/'+d)
+		page = open('WEBPAGES_RAW/'+d, encoding="utf8")
 		soup = BeautifulSoup(page, 'html.parser')
-		# TODO: need to figure out how to use beautifulsoup here
-		# test = soup.findAll(text = re.compile(query[:3]))
+		test = soup.findAll(text = re.compile(query))
 
-		if soup.findAll(text=query):
-			print(bookkeeping[d])
-			result.append(bookkeeping[d])
+		if soup.findAll(test):
+			print("[Pass] " + bookkeeping[d])
+			result.add(bookkeeping[d])
+		else:
+			print("[Fail] " + bookkeeping[d])
 		page.close()
 	return result
 
@@ -33,6 +34,7 @@ def main():
 	# run query over pages
 	result = run_query(bookkeeping, query)
 
+	print("finished")
 	print(result)
 
 	# wrapping up
