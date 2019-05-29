@@ -1,45 +1,79 @@
 import json
-import re
 from bs4 import BeautifulSoup
+from nltk.corpus import stopwords
+from nltk.tokenize import RegexpTokenizer
 
-def ask_input() -> str:
-	print("please enter your query: ")
-	result = input()
-	return result
+# beginning of Milestone 1
 
-def run_query(bookkeeping, query):
-	# this function will run the query over all the pages in bookkeeping
-	result = set()
-	for d in bookkeeping:
-		page = open('WEBPAGES_RAW/'+d, encoding="utf8")
-		soup = BeautifulSoup(page, 'html.parser')
-		test = soup.findAll(text = re.compile(query))
+# this class manipulates the bookkeeping file
+class BookkeepingProcesser:
 
-		if soup.findAll(test):
-			print("[Pass] " + bookkeeping[d])
-			result.add(bookkeeping[d])
-		else:
-			print("[Fail] " + bookkeeping[d])
-		page.close()
-	return result
+    def __init__(self):
+        self.file_count = 0
+        self.keys = []
+        self.json_bookkeeping = {}
 
-def main():
-	# load indexs
-	file = open('WEBPAGES_RAW/bookkeeping.json')
-	bookkeeping = json.load(file)
+    # this function reading the bookkeeping file and load the file into a dict
+    def read_bookkeeping(self):
 
-	# input query
-	query = ask_input()
+        # setting up files and get ready to process 
+        file_bookkeeping = open('WEBPAGES_RAW/bookkeeping.json')
+        json_bookkeeping = json.load(file_bookkeeping)
 
-	# run query over pages
-	result = run_query(bookkeeping, query)
+        # processing
+        for l in json_bookkeeping:
+            self.file_count += 1
+            self.keys.append(l.encode("utf-8"))
+        self.json_bookkeeping = json_bookkeeping
 
-	print("finished")
-	print(result)
+        # wrapping up
+        file_bookkeeping.close()
+        print("Total files: " + str(self.file_count))
 
-	# wrapping up
-	file.close()
+# this class handling the file tokenizing
+class Tokenizer:
+
+    def __init__(self, keys, total):
+        self.paths = keys
+        self.tokenized = {}
+        self.total = total
+
+    # this function will initialize the tokenizing process
+    def start(self):
+        count = 0
+        for path in self.paths:
+            self.tokenized[path] = self.tokenize(path.decode("utf-8"))
+            count += 1
+            print("Tokenizing: " + str(path) + "\t" + str(count) + " out of " + str(self.total))
+
+    def tokenize(self, file_path):
+        tokenizer = RegexpTokenizer(pattern=r'[a-zA-Z0-9]+')
+        html = open("WEBPAGES_RAW/" + file_path).read()
+        soup = BeautifulSoup(html, "lxml")
+
+        # house cleaning, remove tags of script and styles
+        for i in soup(["script", "style"]):
+            i.extract() 
+
+        soup = soup.get_text()
+
+        # tokenizing
+        _valid_tokens = {}
+        for word in tokenizer.tokenize(soup):
+            if word.lower() in _valid_tokens.keys():
+                _valid_tokens[word.lower()] += 1
+            else:
+                _valid_tokens[word.lower()] = 1
+
+        return _valid_tokens
 
 if __name__ == "__main__":
-	main()
+    driver = BookkeepingProcesser()
+    driver.read_bookkeeping()
+
+    tokenizer = Tokenizer(driver.keys, driver.file_count)
+    tokenizer.start()
+    tokens_dict = tokenizer.tokenized
+
+
 
