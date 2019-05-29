@@ -5,6 +5,7 @@ from nltk.tokenize import RegexpTokenizer
 
 # beginning of Milestone 1
 
+
 # this class manipulates the bookkeeping file
 class BookkeepingProcesser:
 
@@ -29,6 +30,7 @@ class BookkeepingProcesser:
         # wrapping up
         file_bookkeeping.close()
         print("Total files: " + str(self.file_count))
+
 
 # this class handling the file tokenizing
 class Tokenizer:
@@ -66,6 +68,7 @@ class Tokenizer:
                 _valid_tokens[word.lower()] = 1
 
         return _valid_tokens
+
 
 if __name__ == "__main__":
     driver = BookkeepingProcesser()
