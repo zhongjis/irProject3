@@ -1,1 +1,7 @@
 /WEBPAGES_RAW
+
+/.idea
+
+/venv
+
+/__pycache__
