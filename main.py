@@ -78,5 +78,17 @@ if __name__ == "__main__":
     tokenizer.start()
     tokens_dict = tokenizer.tokenized
 
+    token_dict_frequency = {} # dict[word] = pair(url, tf)
+
+    for i in tokens_dict:
+        for word in tokens_dict[i]:
+            if word not in token_dict_frequency:
+                token_dict_frequency[word] = {url:token_dict[url][word]}
+            else:
+                token_dict_frequency[word].update({url:token_dict[url][word]})
+
+    print(token_dict_frequency)
+
+
 
 
