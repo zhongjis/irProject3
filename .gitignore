@@ -5,3 +5,5 @@
 /venv
 
 /__pycache__
+
+inverted_index.txt
