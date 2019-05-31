@@ -44,8 +44,8 @@ class InvertedIndexBuilder:
         for token, path_and_tf_dict in sorted(self.inverted_index.items()):
             index_record.write(str(token) + str(path_and_tf_dict) + "\n\n")
 
-        print('the inverted index table is saved to index_record.txt')
-        print('Total unique words: ' + str(len(self.inverted_index)))
+        print('[Message] The inverted index table is saved to index_record.txt')
+        print('[Message] Total unique words: ' + str(len(self.inverted_index)))
 
         return self.inverted_index
 

@@ -26,5 +26,10 @@ if __name__ == "__main__":
     inverted_index = inverted_index_builder.getInvertedIndex()
 
     # setting up MongoDB
-    database = DatabaseHandler()
-    database.connect("INF141_assignment_3", "inverted_index_table")
+    db = DatabaseHandler()
+    db.connect("INF141_assignment_3", "inverted_index_table")
+
+    # inserting items in inverted_index
+    ready_to_insert = {k: str(v).encode("utf-8") for k,v in inverted_index.items()}
+    db.insert(ready_to_insert)
+
