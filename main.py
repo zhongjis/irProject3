@@ -2,17 +2,10 @@
 from Tokenizer import Tokenizer
 from BookkeepingProcesser import BookkeepingProcesser
 from InvertedIndexBuilder import InvertedIndexBuilder
-import pymongo
+from DatabaseHandler import DatabaseHandler
 
 
 if __name__ == "__main__":
-
-    # setting up MongoDB
-    myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-    print('[Success] MongoDB connected')
-
-    mydb = myclient["INF141_assignment_3"]
-    mycol = mydb['inverted_index_table']
 
     # process bookkeeping file
     driver = BookkeepingProcesser()
