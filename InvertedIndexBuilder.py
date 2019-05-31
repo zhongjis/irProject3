@@ -5,28 +5,47 @@
 class InvertedIndexBuilder:
 
     def __init__(self):
-        self.inverted_index = {}
+        self.inverted_index = {} # dict[token] = {page_path : occurance}
 
-    # this will build a index file
-    def build(self, token_frequency, total_doc_number):
+
+    # this method will generate a dict of inverted index 
+    # that each item follows the format dict[token] = {page_path: tf}
+    # @para [tokens] dict[page_path] = {token: occurance}
+    def build(self, tokens):
+        for page_path in tokens:
+            for token in tokens[page_path]:
+                if token not in self.inverted_index:
+                    self.inverted_index[token] = {page_path:tokens[page_path][token]}
+                else:
+                    self.inverted_index[token].update({page_path:tokens[page_path][token]})
+
+
+        for i in self.inverted_index:
+            print(i, self.inverted_index[i])
+
+
+    # this method will caculate the frequency
+    def caculate(self, total_doc_number):
         # calculate tf for all the tokens
         
-        for token, path_with_tf_dict in token_frequency.items():
-            _doc_token - len(path_with_tf_dict.keys())
-            _inversed_doc_frequency = float(total_doc_number) / _doc_token
+        # path_and_tf_dict[page_path] = occurence
+        for token, path_and_tf_dict in self.inverted_index.items():
+            _nmbr_of_doc_with_tkn = len(path_and_tf_dict.keys()) # number of times this token appeared in the corpus
+            _inversed_doc_frequency = float(total_doc_number) / _nmbr_of_doc_with_tkn
 
-            for url, _token_frequency in _inversed_doc_frequency.items():
+            for path, _token_frequency in path_and_tf_dict.items():
                 _tf_idf = _token_frequency * _inversed_doc_frequency
-                path_with_tf_dict[url] = _tf_idf
+                # replace token occurence with _tf_idf
+                # new inverted_index format:
+                # dict[token] = {page_path : tf_idf}
+                path_and_tf_dict[path] = _tf_idf
 
-        print(token_frequency.items())
+        index_record = open('inverted_index.txt', 'w')
 
-        index_record = open('index_record.txt', 'w')
+        for token, path_and_tf_dict in sorted(self.inverted_index.items()):
+            index_record.write(str(token) + str(path_and_tf_dict) + "\n\n")
 
-        for token, path_with_tf_dict in sorted(token_frequency.items()):
-            index_record.write(str(token) + str(path_with_tf_dict) + "\n")
+        print('the inverted index table is saved to index_record.txt')
+        print('Total unique words: ' + str(len(self.inverted_index)))
 
-        print('generated index_record.txt')
-        print('Total unique entries: ' + str(len(token_frequency)))
-
-        return token_frequency
+        return self.inverted_index

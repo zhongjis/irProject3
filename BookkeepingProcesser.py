@@ -19,6 +19,12 @@ class BookkeepingProcesser:
         for l in json_bookkeeping:
             self.file_count += 1
             self.keys.append(l.encode("utf-8"))
+
+            # for test purpose, will only read the first 100 items
+            # TODO: need to be removed upon finish
+            if self.file_count >= 100:
+                break
+
         self.json_bookkeeping = json_bookkeeping
 
         # wrapping up
