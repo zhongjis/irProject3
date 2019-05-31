@@ -8,9 +8,11 @@ class DatabaseHandler:
         self.myclient = pymongo.MongoClient("mongodb://localhost:27017/")
         print('[Success] MongoDB connected')
 
+
     def connect(self, dbname, colname):
         self.mydb = self.myclient["INF141_assignment_3"]
         self.mycol = self.mydb['inverted_index_table']
+
 
     def insert(self):
         pass
