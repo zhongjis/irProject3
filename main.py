@@ -3,6 +3,7 @@ from Tokenizer import Tokenizer
 from BookkeepingProcesser import BookkeepingProcesser
 from InvertedIndexBuilder import InvertedIndexBuilder
 from DatabaseHandler import DatabaseHandler
+from UserInputHandler import UserInputHandler
 
 
 if __name__ == "__main__":
