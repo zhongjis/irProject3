@@ -19,9 +19,8 @@ class InvertedIndexBuilder:
                 else:
                     self.inverted_index[token].update({page_path:tokens[page_path][token]})
 
-
-        for i in self.inverted_index:
-            print(i, self.inverted_index[i])
+        # for i in self.inverted_index:
+        #     print(i, self.inverted_index[i])
 
 
     # this method will caculate the frequency
@@ -48,4 +47,9 @@ class InvertedIndexBuilder:
         print('the inverted index table is saved to index_record.txt')
         print('Total unique words: ' + str(len(self.inverted_index)))
 
+        return self.inverted_index
+
+
+    # getter for inverted_index
+    def getInvertedIndex(self):
         return self.inverted_index

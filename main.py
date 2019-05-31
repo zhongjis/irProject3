@@ -22,4 +22,9 @@ if __name__ == "__main__":
     # building inverted_index
     inverted_index_builder = InvertedIndexBuilder()
     inverted_index_builder.build(tokens_dict)
-    inverted_index = inverted_index_builder.caculate(total_document_number)
+    inverted_index_builder.caculate(total_document_number)
+    inverted_index = inverted_index_builder.getInvertedIndex()
+
+    # setting up MongoDB
+    database = DatabaseHandler()
+    database.connect("INF141_assignment_3", "inverted_index_table")
