@@ -19,7 +19,7 @@ class DatabaseHandler:
         # create table
         collist = self.mydb.list_collection_names()
         if colname in collist:
-            print("[Message] The collection exists. dropping the old collection")
+            print("[Warning] The collection exists. dropping the old collection")
             try:
                 self.mydb.drop_collection(colname)
                 print("[Success] Old collection dropped")
