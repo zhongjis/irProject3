@@ -74,8 +74,10 @@ if __name__ == "__main__":
         query = inputHandlr.ask_query().lower()
         query_token = inputHandlr.remove_stop_words()
 
-        # # search
-        # output = db.search(query)
+        # search
+        output = db.search(query_token)
+
+        print(output)
 
         # result_urls = []
         # for i in output:
