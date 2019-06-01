@@ -48,13 +48,6 @@ class DatabaseHandler:
 
         self.mycol.insert_one(container)
 
-        cursor = self.mycol.find()
-
-        for record in cursor:
-                print(record)
-                print("\n")
-
-
 
     # this method will seach the database for the documents including the query term. the result is not ranked
     def search_valid(self, query):
@@ -69,14 +62,10 @@ class DatabaseHandler:
 
     def search(self, query):
         score_dict = {}
-        path_dict = {}
+        path_dict = {} # (b'0/2', {'home': 3.508771929824561, 'informatics': 7.6923076923076925})
         temp_dict = {}
-        sorted_dict = {}
         valid_entry_dict = self.search_valid(query) 
         # valid_entry_dict[token] = {page_path : tdidf}
-        
-        for i in valid_entry_dict.items():
-            print(i)
 
         for token, postings in valid_entry_dict.items():
             # turning postings from bytes to dict
@@ -93,21 +82,14 @@ class DatabaseHandler:
                     # TODO suppose to addon
                     path_dict[path].update(temp_dict)
 
-        print("path dict")
-        for i in path_dict.items():
-            print(i)
-
-        for k, v in path_dict.items():
+        # calculating the final score
+        for path, postings in path_dict.items():
             score = 0
-            for i in v:
-                score += v[i]
-            score_dict[k] = score
-            # the search result will only present the top 10
-            sorted_dict = sorted(score_dict, key=score_dict.get, reverse=True)[:10]
-        print("sorted dict")
-        # for i in sorted_dict.items():
-        #     print(i)
-        print(sorted_dict)
+            for key in postings:
+                score += postings[key]
+            score_dict[path] = score
 
-        result = sorted_dict
+        # get top 20 keys from score_dict, highest first
+        result = sorted(score_dict, key=score_dict.get, reverse=True)[:20]
+
         return result

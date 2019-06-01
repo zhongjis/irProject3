@@ -38,7 +38,7 @@ if __name__ == "__main__":
         # building inverted_index
         inverted_index_builder = InvertedIndexBuilder()
         inverted_index_builder.build(tokens_dict)
-        inverted_index_builder.caculate(total_document_number)
+        inverted_index_builder.caculate(total_document_number, tokens_dict)
         inverted_index = inverted_index_builder.getInvertedIndex()
 
         # index building report
@@ -77,7 +77,7 @@ if __name__ == "__main__":
         # search
         output = db.search(query_token)
 
-        print("[Message]Here's the top 10 results (highest first):")
+        print("[Message]Here's the top 20 results (highest first):")
 
         for i in output:
             path = i.decode('utf-8')

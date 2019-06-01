@@ -22,7 +22,7 @@ class BookkeepingProcesser:
 
             # for test purpose, will only read the first 100 items
             # TODO: need to be removed upon finish
-            if self.file_count >= 200:
+            if self.file_count >= 2000:
                 break
 
         self.json_bookkeeping = json_bookkeeping

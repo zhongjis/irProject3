@@ -24,12 +24,12 @@ class InvertedIndexBuilder:
 
 
     # this method will caculate the frequency
-    def caculate(self, total_doc_number):
+    def caculate(self, total_doc_number, tokenized):
         # calculate tf for all the tokens
         
         # path_and_tf_dict[page_path] = occurence
         for token, path_and_tf_dict in self.inverted_index.items():
-            _nmbr_of_doc_with_tkn = len(path_and_tf_dict.keys()) # number of times this token appeared in the corpus
+            _nmbr_of_doc_with_tkn = len(path_and_tf_dict.keys()) # number of documents have this token in the corpus
             _inversed_doc_frequency = float(total_doc_number) / _nmbr_of_doc_with_tkn
 
             for path, _token_frequency in path_and_tf_dict.items():
@@ -48,7 +48,6 @@ class InvertedIndexBuilder:
         print('[Message] Total unique words: ' + str(len(self.inverted_index)))
 
         return self.inverted_index
-
 
     # getter for inverted_index
     def getInvertedIndex(self):
