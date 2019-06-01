@@ -4,9 +4,9 @@ import json
 class BookkeepingProcesser:
 
     def __init__(self):
-        self.file_count = 0
-        self.keys = []
-        self.json_bookkeeping = {}
+        self.file_count = 0 # number of total files
+        self.keys = [] 
+        self.json_bookkeeping = {} # json object for bookkeeping
 
     # this method reading the bookkeeping file and load the file into a dict
     def read_bookkeeping(self):
@@ -30,3 +30,8 @@ class BookkeepingProcesser:
         # wrapping up
         file_bookkeeping.close()
         print("Total files: " + str(self.file_count))
+
+
+    # this method will translate page path to url
+    def translate_path_to_url(self, path):
+        return self.json_bookkeeping[path]
