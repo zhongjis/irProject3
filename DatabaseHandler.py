@@ -36,10 +36,10 @@ class DatabaseHandler:
 
     # this method will seach the database for the documents including the query term
     def search(self, query):
-        good_records = set() # files that includes query
+        good_records = dict() # files that includes query
         col_items = self.mycol.find()
         for col_item in col_items:
             for k, v in col_item.items():
                 if query in k or query == k: 
-                    good_records.add((k, v))
+                    good_records[k] = v
         return good_records
