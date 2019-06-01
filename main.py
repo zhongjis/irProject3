@@ -1,5 +1,6 @@
 # Zhongjie Shen 26688124
 import time
+from ast import literal_eval
 
 from Tokenizer import Tokenizer
 from BookkeepingProcesser import BookkeepingProcesser
@@ -61,8 +62,12 @@ if __name__ == "__main__":
         print("[Progress] Finished database insertion, used " + str(time_used) + "s")
 
     else:
+        # set up db and bookkeeping processor
         db = DatabaseHandler()
         db.connect("INF141_assignment_3", "inverted_index_table", True)
+
+        driver = driver = BookkeepingProcesser()
+        driver.read_bookkeeping()
 
         # query handling
         inputHandlr = UserInputHandler()
@@ -70,5 +75,9 @@ if __name__ == "__main__":
 
         # search
         output = db.search(query)
+
         for i in output:
-            print(i)
+            record = output[i].decode('utf-8')
+            record = literal_eval(record)
+            for k in record.keys():
+                print(driver.translate_path_to_url(k.decode('utf-8')))
