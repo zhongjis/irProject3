@@ -54,8 +54,8 @@ class DatabaseHandler:
 
 
 
-    # this method will seach the database for the documents including the query term
-    def search(self, query):
+    # this method will seach the database for the documents including the query term. the result is not ranked
+    def search_valid(self, query):
         good_records = dict() # files that includes query
         col_items = self.mycol.find()
         for col_item in col_items:

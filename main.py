@@ -72,17 +72,18 @@ if __name__ == "__main__":
         # query handling
         inputHandlr = UserInputHandler()
         query = inputHandlr.ask_query().lower()
+        query_token = inputHandlr.remove_stop_words()
 
-        # search
-        output = db.search(query)
+        # # search
+        # output = db.search(query)
 
-        result_urls = []
-        for i in output:
-            record = output[i].decode('utf-8')
-            record = literal_eval(record)
-            for k in record.keys():
-                result.result_urls.append(driver.translate_path_to_url(k.decode('utf-8')))
+        # result_urls = []
+        # for i in output:
+        #     record = output[i].decode('utf-8')
+        #     record = literal_eval(record)
+        #     for k in record.keys():
+        #         result.result_urls.append(driver.translate_path_to_url(k.decode('utf-8')))
 
-        print("Here's the first 20 fetched urls")
-        print(result_urls[:20])
-        print("[Message] Total fetched: " + str(len(result_urls)))
+        # print("Here's the first 20 fetched urls")
+        # print(result_urls[:20])
+        # print("[Message] Total fetched: " + str(len(result_urls)))
