@@ -76,8 +76,13 @@ if __name__ == "__main__":
         # search
         output = db.search(query)
 
+        result_urls = []
         for i in output:
             record = output[i].decode('utf-8')
             record = literal_eval(record)
             for k in record.keys():
-                print(driver.translate_path_to_url(k.decode('utf-8')))
+                result.result_urls.append(driver.translate_path_to_url(k.decode('utf-8')))
+
+        print("Here's the first 20 fetched urls")
+        print(result_urls[:20])
+        print("[Message] Total fetched: " + str(len(result_urls)))
