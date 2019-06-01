@@ -9,57 +9,66 @@ from UserInputHandler import UserInputHandler
 
 
 if __name__ == "__main__":
+    if_build_index = input("[IMPORTANT] Do you want to build the index? [Yes/No]")
 
-    # process bookkeeping file
-    print("[Progress] Start reading bookkeeping file")
+    if if_build_index == "Yes":
 
-    driver = BookkeepingProcesser()
-    driver.read_bookkeeping()
+        print ("[Message] Sure, start building")
 
-    print("[Progress] Finished reading bookkeeping file")
+        # process bookkeeping file
+        print("[Progress] Start reading bookkeeping file")
 
-    # tokenize the raw html files generated from driver
-    print("[Progress] Start index building...")
-    start = time.time()
+        driver = BookkeepingProcesser()
+        driver.read_bookkeeping()
 
-    tokenizer = Tokenizer(driver.keys, driver.file_count)
-    tokenizer.start()
+        print("[Progress] Finished reading bookkeeping file")
 
-    # rename class variables for better expression
-    total_document_number = driver.file_count
-    tokens_dict = tokenizer.tokenized
+        # tokenize the raw html files generated from driver
+        print("[Progress] Start index building...")
+        start = time.time()
 
-    # building inverted_index
-    inverted_index_builder = InvertedIndexBuilder()
-    inverted_index_builder.build(tokens_dict)
-    inverted_index_builder.caculate(total_document_number)
-    inverted_index = inverted_index_builder.getInvertedIndex()
+        tokenizer = Tokenizer(driver.keys, driver.file_count)
+        tokenizer.start()
 
-    # index building report
-    end = time.time()
-    time_used = end - start
-    print("[Progress] Finished index building, used " + str(time_used) + "s")
+        # rename class variables for better expression
+        total_document_number = driver.file_count
+        tokens_dict = tokenizer.tokenized
 
-    # setting up MongoDB
-    db = DatabaseHandler()
-    db.connect("INF141_assignment_3", "inverted_index_table")
+        # building inverted_index
+        inverted_index_builder = InvertedIndexBuilder()
+        inverted_index_builder.build(tokens_dict)
+        inverted_index_builder.caculate(total_document_number)
+        inverted_index = inverted_index_builder.getInvertedIndex()
 
-    # inserting items in inverted_index
-    print("[Progress] Start inserting entries into database")
-    start = time.time()
+        # index building report
+        end = time.time()
+        time_used = end - start
+        print("[Progress] Finished index building, used " + str(time_used) + "s")
 
-    ready_to_insert = {k: str(v).encode("utf-8") for k,v in inverted_index.items()}
-    db.insert(ready_to_insert)
+        # setting up MongoDB
+        db = DatabaseHandler()
+        db.connect("INF141_assignment_3", "inverted_index_table")
 
-    end = time.time()
-    time_used = end - start
-    print("[Progress] Finished database insertion, used " + str(time_used) + "s")
+        # inserting items in inverted_index
+        print("[Progress] Start inserting entries into database")
+        start = time.time()
 
-    # query handling
-    inputHandlr = UserInputHandler()
-    query = inputHandlr.ask_query()
+        ready_to_insert = {k: str(v).encode("utf-8") for k,v in inverted_index.items()}
+        db.insert(ready_to_insert)
 
-    # search
-    output = db.search(query)
-    for i in output:
-        print(i)
+        end = time.time()
+        time_used = end - start
+        print("[Progress] Finished database insertion, used " + str(time_used) + "s")
+
+    else:
+        db = DatabaseHandler()
+        db.connect("INF141_assignment_3", "inverted_index_table", True)
+
+        # query handling
+        inputHandlr = UserInputHandler()
+        query = inputHandlr.ask_query().lower()
+
+        # search
+        output = db.search(query)
+        for i in output:
+            print(i)

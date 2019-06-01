@@ -12,13 +12,13 @@ class DatabaseHandler:
             print('[Fail] Cannot connect to MongoDB')
 
 
-    def connect(self, dbname, colname):
+    def connect(self, dbname, colname, keep_old_collection = False):
         # connect to db instance
         self.mydb = self.myclient[dbname]
 
         # create table
         collist = self.mydb.list_collection_names()
-        if colname in collist:
+        if colname in collist and keep_old_collection == False:
             print("[Warning] The collection exists. dropping the old collection")
             try:
                 self.mydb.drop_collection(colname)
