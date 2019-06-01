@@ -15,14 +15,13 @@ if __name__ == "__main__":
 
     driver = BookkeepingProcesser()
     driver.read_bookkeeping()
-    
+
     print("[Progress] Finished reading bookkeeping file")
 
-    # start timer for recording
+    # tokenize the raw html files generated from driver
     print("[Progress] Start index building...")
     start = time.time()
 
-    # tokenize the raw html files generated from driver
     tokenizer = Tokenizer(driver.keys, driver.file_count)
     tokenizer.start()
 
@@ -36,7 +35,7 @@ if __name__ == "__main__":
     inverted_index_builder.caculate(total_document_number)
     inverted_index = inverted_index_builder.getInvertedIndex()
 
-    # stop timer and report total used time for index building
+    # index building report
     end = time.time()
     time_used = end - start
     print("[Progress] Finished index building, used " + str(time_used) + "s")
@@ -46,10 +45,10 @@ if __name__ == "__main__":
     db.connect("INF141_assignment_3", "inverted_index_table")
 
     # inserting items in inverted_index
-    ready_to_insert = {k: str(v).encode("utf-8") for k,v in inverted_index.items()}
     print("[Progress] Start inserting entries into database")
     start = time.time()
-    
+
+    ready_to_insert = {k: str(v).encode("utf-8") for k,v in inverted_index.items()}
     db.insert(ready_to_insert)
 
     end = time.time()
