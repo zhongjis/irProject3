@@ -31,8 +31,28 @@ class DatabaseHandler:
 
 
     def insert(self, item):
-        result = self.mycol.insert_one(item)
-        return result
+        couter = 0
+        trigger = 2000
+
+        container = dict()
+
+        for i in item:
+            container[i] = item[i]
+            if couter >= trigger:
+                self.mycol.insert_one(container)
+                container = dict()
+                couter = 0
+            couter += 1
+
+        self.mycol.insert_one(container)
+
+        cursor = self.mycol.find()
+
+        for record in cursor:
+                print(record)
+                print("\n")
+
+
 
     # this method will seach the database for the documents including the query term
     def search(self, query):
