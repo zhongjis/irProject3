@@ -55,3 +55,11 @@ if __name__ == "__main__":
     time_used = end - start
     print("[Progress] Finished database insertion, used " + str(time_used) + "s")
 
+    # query handling
+    inputHandlr = UserInputHandler()
+    query = inputHandlr.ask_query()
+
+    # search
+    output = db.search(query)
+    for i in output:
+        print(i)
